@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 
 from data.cities import array
+from keyboards.inline.hobby_keyboard import hobby
 from loader import dp
 from states.select_city import GetMessage
 
@@ -20,7 +21,7 @@ async def get_city_from_user(message: types.Message, state: FSMContext):
     city = message.text
     if city.title() in array:
         await message.answer(f'Хорошо, твой город - <b>{city.title()}</b>\n\n'
-                             f'Выбери на клавиатуре свой интерес.')
+                             f'Выбери на клавиатуре свой интерес.', reply_markup=hobby)
         await state.reset_state()
 
     else:
