@@ -18,5 +18,5 @@ async def show_museums(call: types.CallbackQuery):
 
 @dp.callback_query_handler(Text(equals='back'))
 async def go_back_in_menu(call: types.CallbackQuery):
-    await call.message.delete()
+    await call.message.delete()  # удаляем сообщение, чтобы не было ошибок
     await start_cmd(message=call.message)
