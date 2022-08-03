@@ -6,7 +6,7 @@ hobby = InlineKeyboardMarkup(row_width=3,
                                  [
                                      InlineKeyboardButton(text='назад', callback_data='back'),
                                  ]
-                             ]
+                             ])
 
 
 
