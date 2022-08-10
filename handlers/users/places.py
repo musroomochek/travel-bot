@@ -3,7 +3,6 @@ from aiogram.dispatcher.filters import Text
 
 from handlers.users.start import start_cmd
 from keyboards.inline.active_types import go_active
-from keyboards.inline.back import go_back
 from keyboards.inline.calm_types import go_calm
 from keyboards.inline.hobby_keyboard import hobby
 from loader import dp
@@ -11,7 +10,7 @@ from loader import dp
 
 @dp.callback_query_handler(Text(equals='active'))
 async def show_active(call: types.CallbackQuery):
-    await call.message.edit_text('Супер! Выберете вид актиного отдыха!', reply_markup=go_active)
+    await call.message.edit_text('Супер! Выберете вид активного отдыха!', reply_markup=go_active)
 
 
 @dp.callback_query_handler(Text(equals='calm'))
