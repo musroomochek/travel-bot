@@ -6,6 +6,7 @@ from data.cities import array
 from keyboards.inline.hobby_keyboard import hobby
 from loader import dp
 from states.select_city import GetMessage
+from utils.db_api.commands.users_cmd import add_user
 
 
 @dp.message_handler(Command('start'))
@@ -16,6 +17,12 @@ async def start_cmd(message: types.Message):
     <state.set_state> используется для обозначения нового состояния для пользователя (в нашем случае GetMessage.city)
     <state.update_data> необходима нам для добавления информации в наше состояние (в нашем случае id сообщения)
     """
+
+    await add_user(
+        telegram_id=message.chat.id,
+        username=message.from_user.username,
+        name=message.from_user.first_name
+    )
     msg = await message.answer(f'<b>Привет, {message.from_user.first_name}!</b>\n\n'
                                f'Нечем заняться на досуге? <b>Я тебе помогу!</b>\n\n'
                                f'Для начала введи свой город :)')
