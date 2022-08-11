@@ -1,4 +1,4 @@
 from . import start
 from . import places
-from . import active_hobby
+from . import universal_handler
 from . import admin
