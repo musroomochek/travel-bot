@@ -9,7 +9,4 @@ hobby = InlineKeyboardMarkup(row_width=3,
                                  [
                                      InlineKeyboardButton(text='Спокойный отдых', callback_data='calm'),
                                  ],
-                                 [
-                                     InlineKeyboardButton(text='Назад', callback_data='back')
-                                 ]
                              ])
