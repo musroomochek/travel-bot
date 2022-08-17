@@ -5,6 +5,7 @@ from handlers.users.start import start_cmd
 from keyboards.inline.active_types import go_active
 from keyboards.inline.calm_types import go_calm
 from keyboards.inline.hobby_keyboard import hobby
+from keyboards.inline.nothing_random import go_nothing
 from loader import dp
 
 
@@ -27,3 +28,8 @@ async def go_back_in_menu(call: types.CallbackQuery):
 @dp.callback_query_handler(Text(equals='in_menu'))
 async def in_menu(call: types.CallbackQuery):
     await call.message.edit_text('Выбери на клавиатуре свой интерес.', reply_markup=hobby)
+
+
+@dp.callback_query_handler(Text(equals='nothing'))
+async def show_nothing(call: types.CallbackQuery):
+    await call.message.edit_text('Не понимаешь чем хочешь заниматься? Я тебе помогу!', reply_markup=go_nothing)
