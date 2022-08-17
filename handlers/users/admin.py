@@ -3,10 +3,10 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command, Text
 
 import data.config
-from keyboards.inline.admin_keyboard import admin
+from keyboards.inline.admin_keyboard import admin, categories_kb, description_kb
 from loader import dp
 from states.select_info import GetMessage
-from utils.db_api.commands.places_cmd import add_place
+from utils.db_api.commands.places_cmd import add_place, delete_by_desc
 
 
 @dp.message_handler(Command('admin'))
@@ -47,3 +47,22 @@ async def last_step_add(message: types.Message, state: FSMContext):
             )
         await state.reset_state()
         await message.answer(f'{counter} записей было добавлено.')
+
+
+@dp.callback_query_handler(Text(equals='delete_place'))
+async def delete_place_admin(call: types.CallbackQuery):
+    keyboard = await categories_kb()
+    await call.message.edit_text('Выберите необходимую категорию для удаления.', reply_markup=keyboard)
+
+
+@dp.callback_query_handler(Text(startswith='del_'))
+async def delete_place_second(call: types.CallbackQuery):
+    keyboard = await description_kb(category=call.data.split('_')[1])
+    await call.message.edit_text('Выберите необхимое описание для удаления.', reply_markup=keyboard)
+
+
+@dp.callback_query_handler(Text(startswith='get_'))
+async def delete_place_last(call: types.CallbackQuery):
+    data = call.data.split('_')[1]
+    await delete_by_desc(description=data)
+    await call.answer('Запись успешно удалена!', show_alert=True)
