@@ -1,12 +1,14 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command, Text
+from aiogram.utils.exceptions import BotBlocked
 
 import data.config
 from keyboards.inline.admin_keyboard import admin, categories_kb, description_kb
 from loader import dp
 from states.select_info import GetMessage
 from utils.db_api.commands.places_cmd import add_place, delete_by_desc
+from utils.db_api.commands.users_cmd import select_all_users
 
 
 @dp.message_handler(Command('admin'))
@@ -66,3 +68,30 @@ async def delete_place_last(call: types.CallbackQuery):
     data = call.data.split('_')[1]
     await delete_by_desc(description=data)
     await call.answer('Запись успешно удалена!', show_alert=True)
+
+
+@dp.callback_query_handler(Text(equals='mailing'))
+async def start_mailing(call: types.CallbackQuery):
+    await call.message.edit_text('Введите текст для рассылки')
+    await GetMessage.message.set()
+
+
+@dp.message_handler(state=GetMessage.message)
+async def get_message_mailing(message: types.Message, state: FSMContext):
+    counter_user = 0
+    counter_blocked = 0
+    text = message.text
+    users = await select_all_users()
+    try:
+        for user in users:
+            await dp.bot.send_message(
+                chat_id=user,
+                text=text
+            )
+            counter_user += 1
+    except BotBlocked:
+        counter_blocked += 1
+    await state.reset_state()
+
+    await message.answer(f'Сообщение было доставлено {counter_user} людям.\n'
+                         f'Не получили - {counter_blocked} человек')

@@ -5,6 +5,9 @@ from utils.db_api.commands.places_cmd import get_categories, get_description
 admin = InlineKeyboardMarkup(row_width=3,
                              inline_keyboard=[
                                  [
+                                     InlineKeyboardButton(text='Рассылка', callback_data='mailing')
+                                 ],
+                                 [
                                      InlineKeyboardButton(text='Добавить новое место', callback_data='add_place')
                                  ],
                                  [
