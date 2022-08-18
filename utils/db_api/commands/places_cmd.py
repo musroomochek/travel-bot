@@ -24,6 +24,16 @@ async def select_place(category):
     return array
 
 
+async def select_all_places():
+    array = []
+    async with async_sessionmaker() as session:
+        sql = select(Places)
+        result = await session.execute(sql)
+        for row in result.scalars():
+            array.append(f'{row.picture}|{row.description}|{row.link}')
+    return array
+
+
 async def get_categories():
     array = []
     async with async_sessionmaker() as session:
